@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 def init_db():
     """Initializes and returns a database connection. Returns None if it fails."""
     if not DATABASE_URL:
-        logger.error("Database initialization failed: DATABASE_URL is not set.")
+        logger.warning("DATABASE_URL is not set — database features will be disabled.")
         return None
         
     try:
