@@ -60,11 +60,14 @@ def run():
     apply_styles()
     render_page_header()
 
-    # Preload Singleton connection strictly globally
+    # init_db is @st.cache_resource — runs only once per server session
     connection = init_db()
     cursor = None
     if connection is not None:
-        create_user_data_table(connection)
+        # Only create the table on the very first load, not every rerun
+        if "db_initialized" not in st.session_state:
+            create_user_data_table(connection)
+            st.session_state["db_initialized"] = True
         cursor = connection.cursor()
 
     route, debug_mode = render_sidebar()
