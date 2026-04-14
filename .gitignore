@@ -14,6 +14,7 @@ pip-delete-this-directory.txt
 
 # Streamlit
 .streamlit/credentials.toml
+.streamlit/secrets.toml
 
 # Project Specific
 Uploaded_Resumes/
