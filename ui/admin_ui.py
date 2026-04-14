@@ -25,6 +25,7 @@ def do_logout():
     st.session_state["admin_logged_in"] = False
 
 def admin_page(connection):
+
     """Primary router determining access rendering to the Admin interface."""
     if "admin_logged_in" not in st.session_state:
         st.session_state["admin_logged_in"] = False
