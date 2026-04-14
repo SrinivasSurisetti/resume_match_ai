@@ -1,0 +1,44 @@
+{
+  "Data Science": [
+    "Experience building machine learning models using Python, scikit-learn, pandas, and NumPy.",
+    "Developed deep learning pipelines with TensorFlow and Keras for predictive analytics.",
+    "Performed data cleaning, feature engineering, and statistical analysis on large datasets.",
+    "Designed NLP solutions for sentiment analysis, text classification, and entity extraction.",
+    "Built dashboards and visualizations with matplotlib, seaborn, and Plotly for business insights."
+  ],
+  "Web Development": [
+    "Built responsive web applications using React, JavaScript, HTML5, CSS3, and REST APIs.",
+    "Developed backend services with Node.js, Express, and MongoDB for a full-stack application.",
+    "Implemented Django-based web portals with authentication, templating, and PostgreSQL database.",
+    "Created single-page applications with Angular and TypeScript, including routing and state management.",
+    "Worked on front-end architecture, UI components, and cross-browser optimization."
+  ],
+  "Mobile Development": [
+    "Developed Android applications in Kotlin with Jetpack libraries and RESTful APIs.",
+    "Built iOS apps using Swift, Xcode, and UIKit with support for Core Data and networking.",
+    "Designed cross-platform mobile solutions using Flutter and Dart for Android and iOS.",
+    "Integrated push notifications, local storage, and sensor data into mobile applications.",
+    "Created mobile UI flows and app navigation with React Native and native modules."
+  ],
+  "UI/UX Design": [
+    "Created wireframes and prototypes in Figma and Adobe XD based on user research.",
+    "Conducted usability tests, user interviews, and design workshops to improve experience.",
+    "Designed visual interfaces, iconography, and branding elements for web and mobile apps.",
+    "Collaborated with developers to implement responsive design and accessible UI components.",
+    "Produced interaction design patterns, personas, and journey maps for product teams."
+  ],
+  "Cloud / DevOps": [
+    "Designed cloud infrastructure on AWS with EC2, S3, Lambda, and VPC networking.",
+    "Automated deployments using Docker containers, Kubernetes clusters, and Helm charts.",
+    "Built CI/CD pipelines in Jenkins and GitHub Actions for automated testing and release.",
+    "Managed infrastructure as code with Terraform and Azure Resource Manager templates.",
+    "Implemented monitoring and logging solutions with Prometheus, Grafana, and ELK stack."
+  ],
+  "Data Engineering": [
+    "Built ETL pipelines using Apache Airflow, Spark, and Hadoop for large data ingestion.",
+    "Designed data warehouses with Redshift, BigQuery, and Snowflake for analytics workloads.",
+    "Implemented SQL data models, partitioning, and optimization for query performance.",
+    "Processed streaming data using Kafka, Flink, and real-time analytics frameworks.",
+    "Created data integration workflows and transformation scripts for business reporting."
+  ]
+}

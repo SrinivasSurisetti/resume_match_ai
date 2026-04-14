@@ -1,0 +1,267 @@
+python
+java
+c++
+c#
+javascript
+typescript
+ruby
+php
+swift
+kotlin
+scala
+go
+rust
+perl
+dart
+objective-c
+r
+matlab
+sql
+nosql
+postgresql
+mysql
+sqlite
+mongodb
+redis
+cassandra
+oracle
+mariadb
+hive
+bigquery
+redshift
+snowflake
+elasticsearch
+firebase
+azure sql
+aws rds
+gcp sql
+graphql
+rest api
+soap
+docker
+kubernetes
+openshift
+terraform
+ansible
+puppet
+chef
+helm
+prometheus
+grafana
+splunk
+new relic
+logging
+monitoring
+ci/cd
+jenkins
+github actions
+gitlab ci
+teamcity
+circleci
+bamboo
+maven
+gradle
+npm
+yarn
+pnpm
+webpack
+babel
+rollup
+parcel
+vite
+react
+react native
+angular
+vue
+svelte
+ember
+backbone
+bootstrap
+material ui
+chakra ui
+tailwind css
+sass
+less
+css3
+html5
+ajax
+json
+xml
+websocket
+socket.io
+service workers
+pwa
+cross-browser
+responsive design
+accessibility
+seo
+ui
+ux
+figma
+sketch
+adobe xd
+photoshop
+illustrator
+invision
+zeplin
+user research
+wireframing
+prototyping
+design thinking
+usability
+interaction design
+product design
+scrum
+kanban
+agile
+jira
+confluence
+notion
+monday.com
+asana
+trello
+microsoft teams
+slack
+zoom
+microsoft office
+google workspace
+salesforce
+hubspot
+sap
+oracle erp
+workday
+human resources
+recruiting
+accounting
+finance
+marketing
+data science
+machine learning
+deep learning
+artificial intelligence
+nlp
+computer vision
+reinforcement learning
+natural language processing
+pandas
+numpy
+scipy
+scikit-learn
+tensorflow
+keras
+pytorch
+mxnet
+caffe
+theano
+xgboost
+lightgbm
+catboost
+spark
+hadoop
+hive
+pig
+airflow
+databricks
+jupyter
+otterbook
+zeppelin
+colab
+big data
+data engineering
+data visualization
+matplotlib
+seaborn
+plotly
+tableau
+power bi
+lookml
+d3.js
+dash
+shiny
+qlik
+business intelligence
+analytics
+forecasting
+statistics
+probability
+regression
+classification
+clustering
+data mining
+feature engineering
+data modeling
+etl
+data pipeline
+data warehouse
+domain knowledge
+networking
+tcp/ip
+http
+https
+dns
+vpn
+firewall
+cybersecurity
+penetration testing
+vulnerability assessment
+information security
+iso 27001
+gdpr
+kubernetes security
+cloud security
+identity access management
+authentication
+authorization
+sso
+oauth
+jwt
+oauth2
+ldap
+saml
+blockchain
+cryptocurrency
+bitcoin
+ethereum
+smart contracts
+solidity
+truffle
+web3
+iot
+embedded systems
+arduino
+raspberry pi
+robotics
+automation
+computer architecture
+operating systems
+linux
+windows
+macos
+android
+ios
+bash
+powershell
+shell scripting
+zsh
+perl scripting
+automation testing
+selenium
+cypress
+playwright
+junit
+pytest
+mocha
+jest
+karma
+qtest
+testrail
+performance testing
+load testing
+stress testing
+gherkin
+bdd
+tdd
+api testing
+mobile testing
+security testing
+test automation
