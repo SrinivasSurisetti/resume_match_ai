@@ -1,10 +1,9 @@
-pdfminer3
-pyresparser
 streamlit
 pandas
-psycopg2-binary
-pafy
 plotly
-pymysql
-streamlit-tags
+pdfplumber
+psycopg2-binary
+scikit-learn
+nltk
+spacy
 Pillow
