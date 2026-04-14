@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import base64
 import datetime
 import json
@@ -18,10 +19,33 @@ def section_card(title, icon, subtitle=""):
     """, unsafe_allow_html=True)
 
 def show_pdf(file_path):
+    """Renders a PDF preview using base64 via st.components to avoid Chrome iframe blocking."""
     with open(file_path, "rb") as f:
-        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="720"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+        pdf_bytes = f.read()
+        base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
+
+    # st.components.v1.html renders in a sandboxed iframe Chrome doesn't block
+    pdf_html = f"""
+    <style>
+        body {{ margin: 0; padding: 0; }}
+        iframe {{ border: none; border-radius: 8px; }}
+    </style>
+    <iframe
+        src="data:application/pdf;base64,{base64_pdf}"
+        width="100%"
+        height="600px"
+        type="application/pdf"
+    ></iframe>
+    """
+    components.html(pdf_html, height=620, scrolling=False)
+
+    # Fallback download button in case browser blocks PDF preview
+    st.download_button(
+        label="📥 Download Resume (if preview is not visible)",
+        data=pdf_bytes,
+        file_name=os.path.basename(file_path),
+        mime="application/pdf",
+    )
 
 def render_skill_badges(skills):
     if not skills:
