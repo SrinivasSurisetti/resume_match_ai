@@ -1,13 +1,12 @@
 import psycopg2
 import logging
-import streamlit as st
 from config import DATABASE_URL
 
 logger = logging.getLogger(__name__)
 
-@st.cache_resource(show_spinner=False)
 def init_db():
-    """Initializes and returns a database connection (cached per server session)."""
+    """Initializes and returns a database connection.
+    Connections should be cached/managed by the calling application layer."""
     if not DATABASE_URL:
         logger.warning("DATABASE_URL is not set — database features will be disabled.")
         return None

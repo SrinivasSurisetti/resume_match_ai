@@ -64,19 +64,37 @@ class ResumeParser:
         return normalized
 
     def top_frequent_technical_words(self, text, top_n=5):
-        """Fallback extraction measuring standard token frequency minus stopwords."""
+        """
+        Fallback extraction measuring standard token frequency minus stopwords.
+        
+        [INTERVIEW EXPLANATION - Fallback NLP]
+        If no exact skills are found in the dictionary, this acts as an NLP fallback.
+        It tokenizes the resume, removes common English 'stopwords' (like 'and', 'the'),
+        and returns the most mathematically frequent remaining keywords as suspected skills.
+        """
         try:
             stop_words = set(nltk.corpus.stopwords.words('english'))
         except Exception:
+            logger.warning("Stopwords corpus missing. Operating without stopwords filter.")
             stop_words = set()
             
         tokens = re.findall(r'\b[a-z0-9+#]{2,}\b', text)
         candidates = [tok for tok in tokens if tok not in stop_words and not tok.isdigit()]
         most_common = Counter(candidates).most_common(top_n)
-        return [word for word, _ in most_common]
+        
+        extracted = [word for word, _ in most_common]
+        logger.info(f"Fallback matched {len(extracted)} potential frequent keyword tokens.")
+        return extracted
 
     def extract_skills(self, text):
-        """Extracts skills from text based on exact matching against the dictionary."""
+        """
+        Extracts recognized skills from text based on dictionary matching.
+        
+        [INTERVIEW EXPLANATION - Token Matching Phase]
+        This function iterates through our customized skills database. 
+        It uses RegEx (Regular Expressions) to perform precise word-boundary matches \b
+        on the resume string, guaranteeing 'C' doesn't falsely match against 'Macbook'.
+        """
         normalized_text = self.clean_text_for_matching(text)
         unique_skills = []
         seen = set()
@@ -92,11 +110,11 @@ class ResumeParser:
                     seen.add(normalized_skill)
                     unique_skills.append(normalized_skill)
 
-        # Truncate extraction sequence if nothing is found
         if not unique_skills:
-            logger.info("Exact skill sequence matching failed. Invoking fallback keyword extractor.")
+            logger.warning("Exact skill sequence matching failed. Found 0 dictionary matches. Invoking fallback extractor.")
             return self.top_frequent_technical_words(normalized_text)
             
+        logger.info(f"Successfully extracted {len(unique_skills)} hard-skill tokens from text.")
         return unique_skills
 
     def parse_resume(self, text):

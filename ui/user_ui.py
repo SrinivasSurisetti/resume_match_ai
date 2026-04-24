@@ -9,6 +9,7 @@ from services.parser_service import parser_service
 from services.model_service import model_service
 from services.recommendation import get_course_recommendations, get_random_support_videos
 from services.db_service import insert_data
+from data.sample_resumes import SAMPLE_RESUMES
 
 def section_card(title, icon, subtitle=""):
     st.markdown(f"""
@@ -73,8 +74,27 @@ def course_recommender(course_list):
     return rec_course_names
 
 def user_page(cursor, connection, debug_mode):
+    # -------------------------------------------------------------------------
+    # DEMO MODE: Bypasses PDF parsing with pre-defined sample resumes.
+    # This allows a clean, instant demonstration of role prediction without
+    # needing a physical PDF file during an interview or presentation.
+    # -------------------------------------------------------------------------
+    st.sidebar.markdown("---")
+    demo_mode = st.sidebar.checkbox("🎬 Demo Mode", value=False, help="Load a sample resume for instant prediction.")
+    demo_role_text = None
+
+    if demo_mode:
+        st.info("**🎬 Demo Mode Active** — Select a sample resume below to skip file upload and instantly see results.")
+        selected_demo = st.selectbox("Choose a Sample Resume", list(SAMPLE_RESUMES.keys()))
+        demo_role_text = SAMPLE_RESUMES[selected_demo]
+        st.success(f"Loaded sample: **{selected_demo}**")
+        with st.expander("📄 View Sample Resume Text", expanded=False):
+            st.text(demo_role_text.strip())
+
     section_card("Resume Upload", "📄", "Upload a PDF resume to begin the analysis.")
-    pdf_file = st.file_uploader("Upload Resume", type=["pdf"], label_visibility="collapsed")
+    pdf_file = None if demo_mode else st.file_uploader("Upload Resume", type=["pdf"], label_visibility="collapsed")
+
+    active_text = demo_role_text  # Will be set from PDF if not in demo mode
 
     if pdf_file:
         path = os.path.join(UPLOAD_DIR, pdf_file.name)
@@ -88,11 +108,16 @@ def user_page(cursor, connection, debug_mode):
         show_pdf(path)
         st.markdown("</div>", unsafe_allow_html=True)
 
-        # Parsing Flow
-        resume_text = parser_service.pdf_reader(path)
+        # Parse the PDF to extract raw text
+        active_text = parser_service.pdf_reader(path)
+
+    # Proceed only if there is text to analyse (either from PDF or Demo Mode)
+    if active_text:
+
+        resume_text = active_text
         resume_data = parser_service.parse_resume(resume_text)
 
-        # Experience Level Estimation
+        # Experience Level Estimation (based on resume length/pages)
         if resume_data['no_of_pages'] == 1:
             cand_level = "Fresher"
         elif resume_data['no_of_pages'] == 2:
@@ -100,7 +125,7 @@ def user_page(cursor, connection, debug_mode):
         else:
             cand_level = "Experienced"
 
-        # Model Inference
+        # Model Inference: Use the 3-step pipeline (preprocess → vectorize → cosine similarity)
         predicted_role, confidence = model_service.predict_role(resume_text)
         confidence_pct = confidence * 100
         score, score_category = model_service.calculate_smart_score(resume_text, resume_data['skills'])
@@ -140,6 +165,8 @@ def user_page(cursor, connection, debug_mode):
             st.markdown("<br>", unsafe_allow_html=True)
 
             section_card("Predictions", "🚀", "Resume prediction and confidence metrics.")
+            # Explanation text for interviewers and users
+            st.caption("ℹ️ Prediction is based on similarity between resume content and predefined role descriptions using TF-IDF vectorization and cosine similarity.")
             st.markdown(f"""
             <div class='predictions-panel'>
                 <div class='prediction-row'>

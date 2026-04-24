@@ -46,6 +46,15 @@ def _render_login_form():
         st.markdown("## 🔐 Admin Login")
         st.write("Enter your credentials")
         
+        st.info("""
+🔐 Demo Admin Access
+Username: admin
+Password: admin
+
+(For testing/demo purposes only)
+""")
+
+        
         # Display authentication errors right above the form if present
         if st.session_state["admin_login_error"]:
             st.error(st.session_state["admin_login_error"])

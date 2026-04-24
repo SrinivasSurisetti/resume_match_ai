@@ -40,7 +40,14 @@ class ModelService:
             }
 
     def _initialize_models(self):
-        """Pre-computes the TF-IDF vectors for the predefined roles so it only runs once per server uptime."""
+        """
+        Pre-computes the TF-IDF vectors for the predefined roles. Runs only once per server uptime.
+        
+        [INTERVIEW EXPLANATION - TF-IDF]
+        TF-IDF (Term Frequency - Inverse Document Frequency) maps words to numerical representations.
+        It penalizes overly common words while heavily rewarding highly specific technical keywords.
+        This provides better mapping than simple word-counts.
+        """
         texts = []
         self._role_index = []
         for role, samples in self._job_roles.items():
@@ -50,24 +57,62 @@ class ModelService:
         
         self._tfidf = TfidfVectorizer(stop_words='english')
         self._vectors = self._tfidf.fit_transform(texts)
-        logger.info("Initialized ML predictive models globally.")
+        logger.info("Initialized ML predictive models globally using TF-IDF.")
+
+    def _preprocess_text(self, text):
+        """
+        Cleans and normalizes text for machine learning inference.
+        """
+        normalized = text.lower()
+        normalized = re.sub(r'[^a-z0-9+#]+', ' ', normalized)
+        return normalized.strip()
+
+    def _vectorize_text(self, text):
+        """
+        Converts text string into a mathematical vector representation.
+        Required to compute spatial distances during similarity checks.
+        """
+        return self._tfidf.transform([text])
+
+    def _calculate_similarity(self, input_vector):
+        """
+        [INTERVIEW EXPLANATION - Cosine Similarity]
+        Cosine similarity measures the cosine of the angle between two multi-dimensional vectors.
+        A score of 1.0 (angle 0) means the vectors are identical in direction.
+        A score of 0.0 (angle 90) means vectors are completely orthogonal (no overlap).
+        """
+        return cosine_similarity(input_vector, self._vectors).flatten()
 
     def predict_role(self, resume_text):
-        """Measures cosine similarity between text extracted and JSON profiles."""
+        """
+        End-to-end inference mapping extracted resume content to the closest Technical Profile.
+        
+        Data Flow:
+        1. Preprocess raw text from PDF
+        2. Vectorize via pre-trained TFIDF
+        3. Score mathematically utilizing Cosine Similarity
+        """
         if not resume_text:
             return 'General Technology', 0.0
 
         try:
-            input_vector = self._tfidf.transform([resume_text])
-            similarity = cosine_similarity(input_vector, self._vectors).flatten()
+            # Step 1: Pre-Process text
+            clean_text = self._preprocess_text(resume_text)
+            
+            # Step 2: Vectorization
+            input_vector = self._vectorize_text(clean_text)
+            
+            # Step 3: Compute Similarity Array
+            similarity = self._calculate_similarity(input_vector)
             
             best_idx = int(similarity.argmax())
             best_role = self._role_index[best_idx]
             confidence = float(similarity[best_idx])
 
+            logger.info(f"ML inferred best role: {best_role} (Confidence metric: {confidence:.2f})")
             return best_role, confidence
         except Exception as e:
-            logger.error(f"Failed to predict role for resume text: {e}")
+            logger.error(f"ML inference prediction crashed: {e}")
             return 'General Technology', 0.0
 
     def calculate_smart_score(self, text, skills):

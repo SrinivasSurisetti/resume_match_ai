@@ -55,13 +55,17 @@ def render_sidebar():
     st.sidebar.markdown("<div class='sidebar-footer'>Built with Streamlit</div>", unsafe_allow_html=True)
     return choice, debug_mode
 
+@st.cache_resource(show_spinner=False)
+def get_db_connection():
+    """Proxy function to securely maintain the connection cache state independent of the DB service."""
+    return init_db()
+
 def run():
     """Execution endpoint decoupling configurations from routings."""
     apply_styles()
     render_page_header()
 
-    # init_db is @st.cache_resource — runs only once per server session
-    connection = init_db()
+    connection = get_db_connection()
     cursor = None
     if connection is not None:
         # Only create the table on the very first load, not every rerun
