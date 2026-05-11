@@ -55,7 +55,20 @@ def render_sidebar():
     st.sidebar.markdown("<div class='sidebar-footer'>Built with Streamlit</div>", unsafe_allow_html=True)
     return choice, debug_mode
 
-@st.cache_resource(show_spinner=False)
+def validate_db_connection(conn):
+    """Validates the cached database connection to handle dropped connections gracefully."""
+    if conn is None:
+        return False
+    try:
+        if conn.closed != 0:
+            return False
+        with conn.cursor() as cur:
+            cur.execute("SELECT 1")
+        return True
+    except Exception:
+        return False
+
+@st.cache_resource(show_spinner=False, validate=validate_db_connection)
 def get_db_connection():
     """Proxy function to securely maintain the connection cache state independent of the DB service."""
     return init_db()
